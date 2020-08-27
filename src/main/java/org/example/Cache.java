@@ -4,6 +4,10 @@ public class Cache<K, V> {
 
     private CacheAlgorithm<K, V> algorithm;
 
+    public Cache(CacheAlgorithm<K, V> algorithm) {
+        this.algorithm = algorithm;
+    }
+
     public void setAlgorithm(CacheAlgorithm<K, V> algorithm) {
         this.algorithm = algorithm;
     }

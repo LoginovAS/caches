@@ -23,10 +23,8 @@ public class LRUImpl<K, V> implements CacheAlgorithm<K, V> {
     public V findInCache(K k) {
         V value = heap.get(k);
         if (value != null) {
-            if (keyQuery.contains(k)) {
-                keyQuery.remove(k);
-                keyQuery.add(k);
-            }
+            keyQuery.remove(k);
+            keyQuery.add(k);
         }
         return value;
     }
