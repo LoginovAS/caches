@@ -6,13 +6,13 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Map;
 
-public class LRUHashMap<K, V> implements CacheAlgorithm<K, V> {
+public class LRUImpl<K, V> implements CacheAlgorithm<K, V> {
 
     private Map<K, V> heap;
     private LinkedList<K> keyQuery;
     private int maxSize;
 
-    public LRUHashMap(int maxSize) {
+    public LRUImpl(int maxSize) {
         this.heap = new HashMap<>();
         this.keyQuery = new LinkedList<>();
         this.maxSize = maxSize;
@@ -36,7 +36,7 @@ public class LRUHashMap<K, V> implements CacheAlgorithm<K, V> {
         V value = findInCache(k);
         if (value == null) {
             if (keyQuery.size() == maxSize) {
-                keyQuery.removeFirst();
+                heap.remove(keyQuery.removeFirst());
             }
             keyQuery.add(k);
         }
@@ -47,7 +47,9 @@ public class LRUHashMap<K, V> implements CacheAlgorithm<K, V> {
     }
 
     @Override
-    public int size() {
-        return heap.size();
+    public void display() {
+        for (Map.Entry<K, V> entry : heap.entrySet()) {
+            System.out.print(entry.getValue() + " ");
+        }
     }
 }
