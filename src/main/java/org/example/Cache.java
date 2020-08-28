@@ -20,10 +20,8 @@ public class Cache<K, V> {
         return algorithm == null ? null : algorithm.putIntoCache(k, v);
     }
 
-    public void display() {
-        if (algorithm != null) {
-            algorithm.display();
-        }
+    public String toString() {
+        return algorithm.toString();
     }
 
 }

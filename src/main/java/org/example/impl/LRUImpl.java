@@ -4,50 +4,30 @@ import org.example.CacheAlgorithm;
 
 import java.util.HashMap;
 import java.util.LinkedList;
-import java.util.Map;
 
-public class LRUImpl<K, V> implements CacheAlgorithm<K, V> {
+public class LRUImpl<K, V> extends CacheAlgorithm<K, V> {
 
-    private Map<K, V> heap;
     private LinkedList<K> keyQuery;
-    private int maxSize;
 
     public LRUImpl(int maxSize) {
-        this.heap = new HashMap<>();
+        this.heap = new HashMap<>(maxSize);
         this.keyQuery = new LinkedList<>();
         this.maxSize = maxSize;
     }
 
-
     @Override
-    public V findInCache(K k) {
-        V value = heap.get(k);
-        if (value != null) {
-            keyQuery.remove(k);
-            keyQuery.add(k);
-        }
-        return value;
+    protected void registerRequest(K k) {
+        keyQuery.remove(k);
+        keyQuery.add(k);
     }
 
     @Override
-    public V putIntoCache(K k, V v) {
-        V value = findInCache(k);
-        if (value == null) {
-            if (keyQuery.size() == maxSize) {
-                heap.remove(keyQuery.removeFirst());
-            }
-            keyQuery.add(k);
-        }
-
-        heap.put(k, v);
-
-        return v;
+    protected void supplant() {
+        heap.remove(keyQuery.removeFirst());
     }
 
     @Override
-    public void display() {
-        for (Map.Entry<K, V> entry : heap.entrySet()) {
-            System.out.print(entry.getValue() + " ");
-        }
+    protected void updatePositions(K k) {
+        keyQuery.add(k);
     }
 }
