@@ -19,15 +19,6 @@ public class LFUImpl<K, V> extends CacheAlgorithm<K, V> {
         this.maxSize = maxSize;
     }
 
-    @Override
-    public V findInCache(K k) {
-        V value = heap.get(k);
-        if (value != null) {
-            registerRequest(k);
-        }
-        return value;
-    }
-
     protected void registerRequest(K k) {
         Integer frequencyByKey = removeFrequencyInformation(k);
         addNewFrequencyInformation(++frequencyByKey, k);

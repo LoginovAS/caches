@@ -24,11 +24,11 @@ public class Cache<K, V> {
     }
 
     public V get(K k) {
-        return algorithm == null ? null : algorithm.findInCache(k);
+        return algorithm.findInCache(k);
     }
 
     public V put(K k, V v) {
-        return algorithm == null ? null : algorithm.putIntoCache(k, v);
+        return algorithm.putIntoCache(k, v);
     }
 
     public String toString() {
