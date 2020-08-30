@@ -10,9 +10,8 @@ public class LRUImpl<K, V> extends CacheAlgorithm<K, V> {
     private LinkedList<K> keyQuery;
 
     public LRUImpl(int maxSize) {
-        this.heap = new HashMap<>(maxSize);
+        super(maxSize);
         this.keyQuery = new LinkedList<>();
-        this.maxSize = maxSize;
     }
 
     @Override
@@ -22,7 +21,7 @@ public class LRUImpl<K, V> extends CacheAlgorithm<K, V> {
     }
 
     @Override
-    protected void supplant() {
+    protected void displace() {
         heap.remove(keyQuery.removeFirst());
     }
 

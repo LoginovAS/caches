@@ -13,10 +13,9 @@ public class LFUImpl<K, V> extends CacheAlgorithm<K, V> {
     private Map<K, Integer> keys;
 
     public LFUImpl(int maxSize) {
-        this.heap = new HashMap<>(maxSize);
+        super(maxSize);
         this.frequencies = new TreeMap<>();
         this.keys = new HashMap<>(maxSize);
-        this.maxSize = maxSize;
     }
 
     protected void registerRequest(K k) {
@@ -55,7 +54,7 @@ public class LFUImpl<K, V> extends CacheAlgorithm<K, V> {
     }
 
     @Override
-    protected void supplant() {
+    protected void displace() {
         LinkedList<K> minimalFrequencyKeys = frequencies.get(frequencies.firstKey());
         K oldestKeyByFrequency = minimalFrequencyKeys.removeFirst();
         keys.remove(oldestKeyByFrequency);

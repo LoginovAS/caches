@@ -1,11 +1,20 @@
 package org.example;
 
+import java.util.HashMap;
 import java.util.Map;
 
 public abstract class CacheAlgorithm<K, V> {
 
     protected Map<K, V> heap;
     protected int maxSize;
+
+    public CacheAlgorithm(int maxSize) {
+        if (maxSize <= 0) {
+            throw new IllegalArgumentException("Max size should be above zero");
+        }
+        this.heap = new HashMap<>(maxSize);
+        this.maxSize = maxSize;
+    }
 
     public V findInCache(K k) {
         V value = heap.get(k);
@@ -17,9 +26,12 @@ public abstract class CacheAlgorithm<K, V> {
     }
 
     public V putIntoCache(K k, V v) {
+        if (k == null || v == null) {
+            throw new IllegalArgumentException("Key or value cannot be null");
+        }
         V value = findInCache(k);
         if (value == null) {
-            supplantIfIsFull();
+            displaceIfFull();
             updatePositions(k);
         }
 
@@ -28,15 +40,15 @@ public abstract class CacheAlgorithm<K, V> {
         return v;
     }
 
-    private void supplantIfIsFull() {
+    private void displaceIfFull() {
         if (heap.size() == maxSize) {
-            supplant();
+            displace();
         }
     }
 
     protected abstract void registerRequest(K k);
 
-    protected abstract void supplant();
+    protected abstract void displace();
 
     protected abstract void updatePositions(K k);
 
