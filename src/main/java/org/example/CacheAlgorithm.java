@@ -9,11 +9,15 @@ public abstract class CacheAlgorithm<K, V> {
     protected int maxSize;
 
     public CacheAlgorithm(int maxSize) {
-        if (maxSize <= 0) {
-            throw new IllegalArgumentException("Max size should be above zero");
-        }
+        checkAboveZero("Max size should be above zero", maxSize);
         this.heap = new HashMap<>(maxSize);
         this.maxSize = maxSize;
+    }
+
+    private void checkAboveZero(String message, int value) {
+        if (value <= 0) {
+            throw new IllegalArgumentException("Max size should be above zero");
+        }
     }
 
     public V findInCache(K k) {
@@ -26,12 +30,11 @@ public abstract class CacheAlgorithm<K, V> {
     }
 
     public V putIntoCache(K k, V v) {
-        if (k == null || v == null) {
-            throw new IllegalArgumentException("Key or value cannot be null");
-        }
+        checkArgumentNotNull("Key cannot be null", k);
+        checkArgumentNotNull("Value cannot be null", v);
         V value = findInCache(k);
         if (value == null) {
-            displaceIfFull();
+            evictIfFull();
             updatePositions(k);
         }
 
@@ -40,19 +43,27 @@ public abstract class CacheAlgorithm<K, V> {
         return v;
     }
 
-    private void displaceIfFull() {
-        if (heap.size() == maxSize) {
-            displace();
+    private void checkArgumentNotNull(String message, Object o) {
+        if (o == null) {
+            throw new IllegalArgumentException(message);
         }
+    }
+
+    private void evictIfFull() {
+        if (heap.size() == maxSize) {
+            evict();
+        }
+    }
+
+    public int getMaxSize() {
+        return maxSize;
     }
 
     protected abstract void registerRequest(K k);
 
-    protected abstract void displace();
+    protected abstract void evict();
 
     protected abstract void updatePositions(K k);
-
-
 
     public String toString() {
         StringBuilder result = new StringBuilder();

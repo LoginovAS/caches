@@ -4,11 +4,11 @@ import org.example.CacheAlgorithm;
 
 import java.util.LinkedList;
 
-public class LRUImpl<K, V> extends CacheAlgorithm<K, V> {
+public class LruImpl<K, V> extends CacheAlgorithm<K, V> {
 
     private LinkedList<K> keyQuery;
 
-    public LRUImpl(int maxSize) {
+    public LruImpl(int maxSize) {
         super(maxSize);
         this.keyQuery = new LinkedList<>();
     }
@@ -20,7 +20,7 @@ public class LRUImpl<K, V> extends CacheAlgorithm<K, V> {
     }
 
     @Override
-    protected void displace() {
+    protected void evict() {
         heap.remove(keyQuery.removeFirst());
     }
 

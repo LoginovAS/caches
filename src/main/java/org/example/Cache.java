@@ -1,6 +1,6 @@
 package org.example;
 
-import org.example.impl.LRUImpl;
+import org.example.impl.LruImpl;
 
 public class Cache<K, V> {
 
@@ -12,14 +12,10 @@ public class Cache<K, V> {
      * Creates cache with LRU algorithm and 10 objects by default.
      */
     public Cache() {
-        algorithm = new LRUImpl<>(DEFAULT_CAPACITY);
+        algorithm = new LruImpl<>(DEFAULT_CAPACITY);
     }
 
     public Cache(CacheAlgorithm<K, V> algorithm) {
-        this.algorithm = algorithm;
-    }
-
-    public void setAlgorithm(CacheAlgorithm<K, V> algorithm) {
         this.algorithm = algorithm;
     }
 
@@ -29,6 +25,10 @@ public class Cache<K, V> {
 
     public V put(K k, V v) {
         return algorithm.putIntoCache(k, v);
+    }
+
+    public int getMaxSize() {
+        return algorithm.getMaxSize();
     }
 
     public String toString() {

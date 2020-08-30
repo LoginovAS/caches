@@ -7,12 +7,12 @@ import java.util.LinkedList;
 import java.util.Map;
 import java.util.TreeMap;
 
-public class LFUImpl<K, V> extends CacheAlgorithm<K, V> {
+public class LfuImpl<K, V> extends CacheAlgorithm<K, V> {
 
     private TreeMap<Integer, LinkedList<K>> frequencies;
     private Map<K, Integer> keys;
 
-    public LFUImpl(int maxSize) {
+    public LfuImpl(int maxSize) {
         super(maxSize);
         this.frequencies = new TreeMap<>();
         this.keys = new HashMap<>(maxSize);
@@ -54,7 +54,7 @@ public class LFUImpl<K, V> extends CacheAlgorithm<K, V> {
     }
 
     @Override
-    protected void displace() {
+    protected void evict() {
         LinkedList<K> minimalFrequencyKeys = frequencies.get(frequencies.firstKey());
         K oldestKeyByFrequency = minimalFrequencyKeys.removeFirst();
         keys.remove(oldestKeyByFrequency);
